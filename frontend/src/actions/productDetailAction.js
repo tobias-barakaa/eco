@@ -1,19 +1,17 @@
-// import axios from "axios";
-// import { productListRequest, productListSuccess, productListFail } from "../reducers/productReducers";
+import axios from "axios";
+import { productDetailsSuccess, productDetailsFail, productDetailsRequest } from "../reducers/productDetails";
 
+const listDetailsProducts = async (id, dispatch) => {
+    try {
+        dispatch(productDetailsRequest());
 
-// const listProducts = () => async (dispatch) => {
-//     try {
-//         dispatch(productListRequest());
+        const { data } = await axios.get(`/api/products/${id}`);
 
-//         const { data } = await axios.get('/api/products');
+        dispatch(productDetailsSuccess(data));
+    } catch (error) {
+        dispatch(productDetailsFail(error.message));
+        console.log(error);
+    }
+};
 
-//         dispatch(productListSuccess(data));
-//     } catch (error) {
-//         dispatch(productListFail(error.message));
-//         console.log(error);
-//     }
-// };
-
-
-// export default listProducts;
+export default listDetailsProducts;

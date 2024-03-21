@@ -1,5 +1,5 @@
 import axios from "axios";
-import { productListRequest, productListSuccess, productListFail } from "../reducers/productReducers";
+import { productListRequest, productListSuccess, productListFail }from "../reducers/productReducers";
 
 
 const listProducts = () => async (dispatch) => {
