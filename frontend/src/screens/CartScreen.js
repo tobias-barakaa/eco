@@ -3,9 +3,8 @@ import { Button, Col, Form, Row, Image, ListGroup, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Message from '../components/Message'
-import addToCart from '../actions/cartActions'
 import { useLocation } from 'react-router-dom';
-import { cartSuccess } from '../reducers/cartReducers'
+import { addToCart, removeFromCart } from '../slices/cartSlice'
 
 
 
@@ -16,6 +15,17 @@ const CartScreen = ({match, history}) => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
+  const addToCartHandler = async(product, qty) => {
+    dispatch(addToCart({...product, qty}))
+  }
+
+  const removeFromCartHandler = async (id) => {
+    dispatch(removeFromCart(id))
+  }
+
+  const checkoutHandler = () => { 
+    navigate('/login?redirect=shipping')
+  }
     return (
     <Row>
 
@@ -44,7 +54,7 @@ const CartScreen = ({match, history}) => {
                     <Form.Control
                       as='select'
                       value={item.qty}
-                      onChange={(e) => dispatch(addToCart(item.product, Number(e.target.value)))}
+                      onChange={(e) => addToCartHandler(item, Number(e.target.value))}
                     >
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
@@ -57,7 +67,7 @@ const CartScreen = ({match, history}) => {
                     <Button
                       type='button'
                       variant='light'
-                      // onClick={() => removeFromCartHandler(item.product)}
+                      onClick={() => removeFromCartHandler(item._id)}
                     >
                       <i className='fas fa-trash'></i>
                     </Button>
@@ -78,7 +88,10 @@ const CartScreen = ({match, history}) => {
             <ListGroup.Item>
               <Button type='button' className='btn-block' disabled={
                 cartItems.length === 0
-              }>
+              }
+              onClick={checkoutHandler}
+              
+              >
                 Proceed to Checkout
               </Button>
             </ListGroup.Item>

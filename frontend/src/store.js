@@ -1,16 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import productListReducer from './reducers/productReducers';
-import productDetails from './reducers/productDetails';
-import cartReducers from './reducers/cartReducers';
-import { setupListeners } from "@reduxjs/toolkit/query/react";
 import { apiSlice } from './slices/apiSlice';
 import cartSliceReducer from './slices/cartSlice';
-
-
-
-
-
-
 
 const store = configureStore({
     reducer: {
