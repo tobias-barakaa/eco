@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { Col, Row, Image, Button, Card, ListGroup, Form } from 'react-bootstrap';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productApiSlice';
+import { addToCart } from '../slices/cartSlice';
+import { useDispatch } from 'react-redux';
+
 
 const ProductScreen = () => {
     const [qty, setQty] = useState(1);
     const { id: productId } = useParams();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { data: product } = useGetProductDetailsQuery(productId);
+
+    const addToCartHandler = () => {
+      dispatch( addToCart ({ ...product, qty}))
+      navigate(`/cart/${productId}?qty=${qty}`);
+    }
 
     if (!product) {
         return <div>Loading...</div>; // Add loading indicator while data is being fetched
@@ -88,7 +98,7 @@ const ProductScreen = () => {
 
                             <ListGroup.Item>
                                 <Button 
-                                    // onClick={addToCartHandler}
+                                    onClick={addToCartHandler}
                                     className='btn-block' type='button' 
                                     disabled={product.countInStock === 0}
                                 >
