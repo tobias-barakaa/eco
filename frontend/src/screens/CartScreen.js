@@ -5,21 +5,22 @@ import { Link, useParams } from 'react-router-dom'
 import Message from '../components/Message'
 import addToCart from '../actions/cartActions'
 import { useLocation } from 'react-router-dom';
+import { cartSuccess } from '../reducers/cartReducers'
 
 
 
 const CartScreen = ({match, history}) => {
-    const {productId} = useParams()
-    const location = useLocation()
-    const qty = location.search ? Number(location.search.split('=')[1]) : 1;
+    // const {productId} = useParams()
+    // const location = useLocation()
+    // const qty = location.search ? Number(location.search.split('=')[1]) : 1;
     
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
-    useEffect(() => {
-        if(productId) {
-            dispatch(addToCart(productId, qty));
-        }
-    }, [dispatch, productId, qty]);
+    // useEffect(() => {
+    //     if(productId) {
+    //         dispatch(cartSuccess(productId, qty));
+    //     }
+    // }, [dispatch, productId, qty]);
     
     // const cart = useSelector((state)=>state.cart);
     // console.log(cart)

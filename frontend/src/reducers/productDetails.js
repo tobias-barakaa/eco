@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
+    // product: null,
     product: [],
     loading: false,
     error: null
@@ -17,7 +18,7 @@ const initialState = {
       },
       productDetailsSuccess(state, action) {
         // state.loading = false;
-        state.product = action.payload;
+        state.product = action.payload.product;
         // state.reviews = action.payload.reviews;
         // state.error = null;
       },

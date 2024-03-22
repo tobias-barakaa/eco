@@ -1,9 +1,13 @@
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { productDetailsSuccess, productDetailsFail, productDetailsRequest } from "../reducers/productDetails";
 
-const listDetailsProducts = async (id, dispatch) => {
+
+const listDetailsProducts = () => async (dispatch) => {
+    const { id } = useParams();
     try {
         dispatch(productDetailsRequest());
+        
 
         const { data } = await axios.get(`/api/products/${id}`);
 
@@ -13,5 +17,6 @@ const listDetailsProducts = async (id, dispatch) => {
         console.log(error);
     }
 };
+
 
 export default listDetailsProducts;

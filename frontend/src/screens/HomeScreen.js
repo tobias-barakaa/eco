@@ -5,24 +5,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import listProducts from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { useGetProductsQuery } from '../slices/productApiSlice';
 
 const HomeScreen = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(listProducts());
+  // }, [dispatch]);
 
-  const productList = useSelector(state => state.productList);
-  const { loading, error, products } = productList;
+  // const productList = useSelector(state => state.productList);
+  // const { loading, error, products } = productList;
+
+  const { data: products, error, isLoading } = useGetProductsQuery();
+  // const { data, isLoading, error } = useGetProductsQuery();
 
   return (
     <>
       <h1>Latest Products</h1>
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>Error: {error}</Message>
+        <Message variant='danger'>Error: {error?.message || error.error}</Message>
       ) : (
         <Row>
           {products.map(product => (
