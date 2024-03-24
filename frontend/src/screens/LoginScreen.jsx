@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 
 
 const LoginScreen = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const dispatch = useDispatch();
@@ -35,8 +35,8 @@ const LoginScreen = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            const resp = await login({email, password}).unwrap();
-            dispatch(setCredentials({...resp, email: email}));
+            const resp = await login({username, password}).unwrap();
+            dispatch(setCredentials({...resp, username: username}));
             navigate(redirect);
         } catch (error) {
             toast.error(error.data?.message || error.error)
@@ -46,13 +46,13 @@ const LoginScreen = () => {
     <FormContainer>
         <h1>Sign In</h1>
         <Form onSubmit={submitHandler}>
-            <Form.Group controlId='email'>
-                <Form.Label>Email Address</Form.Label>
+            <Form.Group controlId='username'>
+                <Form.Label>username Address</Form.Label>
                 <Form.Control
-                    type='email'
-                    placeholder='Enter email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type='username'
+                    placeholder='Enter username'
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 >
                 </Form.Control>
             </Form.Group>
