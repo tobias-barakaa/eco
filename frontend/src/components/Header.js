@@ -3,16 +3,28 @@ import { NavDropdown } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { BrowserRouter as Router } from 'react-router-dom'; // Import BrowserRouter
+import { BrowserRouter as Router, useNavigate } from 'react-router-dom'; // Import BrowserRouter
+import { useLogoutMutation } from '../slices/usersApiSlice';
+import { logout } from '../slices/authSlice';
 
 function Header() {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
+  const [logoutApiCall] = useLogoutMutation();
 
-  const logoutHandler = () => {
-    console.log('sum')
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = async() => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate('login')
+    } catch (error) {
+      console.error('Failed to logout', error);
+    }
   }
 
   return (
@@ -40,7 +52,7 @@ function Header() {
                         </NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Item
-                      onclick={logoutHandler}
+                      onClick={logoutHandler}
                       >
                         Logout
                       </NavDropdown.Item>

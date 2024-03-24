@@ -4,20 +4,23 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import FormContainer from '../components/FormContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
-import { useLoginMutation } from '../slices/usersApiSlice';
+import { useRegisterMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 
 
 
-const LoginScreen = () => {
-    const [username, setUsername] = useState('');
+const RegisterScreen = () => {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const [login, {isLoading}] = useLoginMutation();
+    const [register, {isLoading}] = useRegisterMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
 
@@ -34,29 +37,47 @@ const LoginScreen = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        if (password !== confirmPassword) {
+            toast.error('Passwords do not match');
+            return;
+        }
+        else {
         try {
-            const resp = await login({username, password}).unwrap();
+            const resp = await register({name, email, password}).unwrap();
             dispatch(setCredentials({...resp}));
             navigate(redirect);
         } catch (error) {
             toast.error(error.data?.message || error.error)
         }
     }
+    }
   return (
     <FormContainer>
-        <h1>Sign In</h1>
+        <h1>Sign UP</h1>
         <Form onSubmit={submitHandler}>
-            <Form.Group controlId='username'>
-                <Form.Label>username Address</Form.Label>
+        <Form.Group controlId='email'>
+                <Form.Label>email Address</Form.Label>
                 <Form.Control
-                    type='username'
-                    placeholder='Enter username'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    type='email'
+                    placeholder='Enter Name'
+                    value={email}
+                    onChange={(e) => setName(e.target.value)}
                 >
                 </Form.Control>
             </Form.Group>
 
+            <Form.Group controlId='email'>
+                <Form.Label>email Address</Form.Label>
+                <Form.Control
+                    type='email'
+                    placeholder='Enter email'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                >
+                </Form.Control>
+            </Form.Group>
+
+            
             <Form.Group controlId='password'>
                 <Form.Label>Password</Form.Label>
                 <Form.Control
@@ -66,22 +87,32 @@ const LoginScreen = () => {
                 >
                 </Form.Control>
             </Form.Group>
+            
+            <Form.Group controlId='password'>
+                <Form.Label>confirmPassword</Form.Label>
+                <Form.Control
+                    type='confirmPassword'
+                    placeholder='Enter password'
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                >
+                </Form.Control>
+            </Form.Group>
 
             <Button type='submit' variant='primary'className='mt-2'
             disabled={isLoading}
             >
-                Sign In
+                Register
             </Button>
             {isLoading && <Loader/>}
         </Form>
         <Row className='py-3'>
             <Col>
-            New Customer? <Link to="/register">Register</Link>
+            Already have an account? <Link to='/login'>Login</Link>
             </Col>
         </Row>
-       
+      
     </FormContainer>
   )
 }
 
-export default LoginScreen
+export default RegisterScreen

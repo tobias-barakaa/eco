@@ -8,6 +8,7 @@ import CartScreen from './screens/CartScreen';
 import LoginScreen from './screens/LoginScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import RegisterScreen from './screens/RegisterScreen';
 
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
         <Route path='/product/:id' element={<ProductScreen/>} />
         <Route path='/cart/:id?' element={<CartScreen/>} />
         <Route path='/login' element={<LoginScreen/>} />
+        <Route path='/register' element={<RegisterScreen />} />
+
 
 
         </Routes>
