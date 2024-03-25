@@ -3,10 +3,11 @@ from rest_framework.response import Response
 from base.models import Product, Order, OrderItem, ShippingAddress
 from base.serializers import ProductSerializer, OrderSerializer
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 @api_view(['POST'])
-@permission_classes(['IsAuthenticated'])
+@permission_classes([IsAuthenticated])
 def addOrderItems(request):
     user = request.user
     data = request.data
@@ -42,10 +43,14 @@ def addOrderItems(request):
                 qty=i['qty'],
                 price=i['price'],
                 image=product.image.url
-            )
-        # (4) update stock
+        
+         )
+            # Update stock here inside the loop
+            product.countInStock -= item.qty
+            product.save()
+        # (4) update stock{"detail":"Authentication credentials were not provided."}
         
         product.countInStock -= item.qty
         product.save()
-    serializer = OrderSerializer(order, many=True)
+    serializer = OrderSerializer(order, many=False)
     return Response(serializer.data)
