@@ -10,7 +10,7 @@ urlpatterns = [
       
     path('profile/', views.getUserProfile, name="user-profile"),
     
-    path('/', views.getUsers, name="users"),
+    path('', views.getUsers, name="users"),
     
     
 ]
