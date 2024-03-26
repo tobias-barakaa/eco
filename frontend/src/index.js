@@ -6,12 +6,15 @@ import './index.css';
 import './bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App />
+    <PayPalScriptProvider deferLoading={true}>
+      <App />
+    </PayPalScriptProvider>
   </Provider>
 );
 

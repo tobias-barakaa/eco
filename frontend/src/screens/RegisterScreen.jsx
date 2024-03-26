@@ -55,12 +55,12 @@ const RegisterScreen = () => {
     <FormContainer>
         <h1>Sign UP</h1>
         <Form onSubmit={submitHandler}>
-        <Form.Group controlId='email'>
-                <Form.Label>email Address</Form.Label>
+        <Form.Group controlId='name'>
+                <Form.Label>Name Address</Form.Label>
                 <Form.Control
-                    type='email'
+                    type='name'
                     placeholder='Enter Name'
-                    value={email}
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                 >
                 </Form.Control>

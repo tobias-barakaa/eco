@@ -26,7 +26,7 @@ const PlaceOrderScreen = () => {
 
     const [createOrder, { data, error, isLoading }] = useCreateOrderMutation();
 
-    const placeOrderHandler = async () => {
+    const placeOrderHandler = async (id) => {
         try {
             const resp = await createOrder({
                 orderItems: cart.cartItems,
@@ -38,6 +38,7 @@ const PlaceOrderScreen = () => {
                 totalPrice: cart.totalPrice,
 
             }).unwrap();
+            // navigate('/order')
             dispatch(clearCartItems());
             navigate(`/order/${resp._id}`);
         } catch (error) {
