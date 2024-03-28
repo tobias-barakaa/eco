@@ -5,8 +5,9 @@ import { Form, Link, useNavigate, useParams } from "react-router-dom"
 import Message from "../components/Message"
 import { toast } from "react-toastify"
 import Loader from "../components/Loader"
-import { useGetProductDetailsQuery, useUpdateProductMutation } from "../slices/productApiSlice"
-import FormContainer from "../components/FormContainer"
+import { useGetProductDetailsQuery, useUpdateProductMutation, useUploadProductImageMutation } from "../slices/productApiSlice"
+import FormContainer from "../components/FormContainer";
+
 
 
 const ProductEditScreen = () => {
@@ -38,6 +39,19 @@ const ProductEditScreen = () => {
     }, [product]);
 
     const submitHandler = async(e) => {}
+    const uploadFileHandler = async(e) => {
+        const formData = new FormData();
+        try {
+            const resp = await uploadProductImage(formData);
+            setImage(resp.image);
+            toast.success(resp.message)
+        } catch (error) {
+            toast.error('error')
+        }
+    }
+
+    const [uploadProductImage, {isLoading: uploadLoading, error: uploadError}] = useUploadProductImageMutation();
+
     
   return (
     <div>
@@ -63,7 +77,14 @@ const ProductEditScreen = () => {
                     </Form.Group>
                     <Form.Group controlId='image'>
                         <Form.Label>Image</Form.Label>
-                        <Form.Control type='text' placeholder='Enter Image' value={image} onChange={(e) => setImage(e.target.value)}></Form.Control>
+                        <Form.Control type='text' placeholder='Enter 
+                        Image' value={image} onChange={(e) => setImage(e.target.value)}></Form.Control>
+                     <Form.Control type='file' Label='choose file'
+                     onChange={uploadFileHandler}
+                     >
+
+                     </Form.Control>
+                   
                     </Form.Group>
                     <Form.Group controlId='brand'>
                         <Form.Label>Brand</Form.Label>

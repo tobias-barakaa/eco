@@ -7,18 +7,18 @@ import Loader from '../components/Loader';
 import { useGetOrderDetailsQuery, useDeliverOrderMutation,usePayOrderMutation, useGetPaypalClientIdQuery } from '../slices/ordersApiSlice';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import { toast } from 'react-toastify';
-import { useCreateProductMutation, useGetProductDetailsQuery } from '../slices/productApiSlice';
+import { useCreateProductMutation, useDeleteProductMutation, useGetProductDetailsQuery } from '../slices/productApiSlice';
 import { LinkContainer } from 'react-router-bootstrap';
 
 
 const ProductListScreen = () => {
+    
     const { data: products, isLoading, erros } = useGetProductDetailsQuery();
    const [createProduct, { refetch, isLoading: createLoading, error: createError, data: createData }] = useCreateProductMutation();
    
-   const deleteHandler = (id) => {
-        console.log('delete')
-    }
+   
 
+    const [deleteProduct, { isLoading: deleteLoading, error: deleteError }] = useDeleteProductMutation();
 
 
     const createProductHandler = async() => {
@@ -33,6 +33,16 @@ const ProductListScreen = () => {
     }
     }
     
+    const deleteHandler = async (id) => {
+        if (window.confirm('Are you sure you want to delete this product?')) {
+            try {
+                await deleteProduct(id);
+                refetch();
+            } catch (error) {
+                toast.error('whats wrong')
+            }
+        }
+    }
 
   return (
     <>
