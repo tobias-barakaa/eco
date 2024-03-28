@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listOrders } from '../actions/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { useGetUsersQuery } from '../slices/usersApiSlice';
 
 
 const OrderListScreen = () => {
-  const { data: orders, isLoading, erros } = useSelector(state => state.orderList);
+  const { data: orders, isLoading, erros } = useGetUsersQuery();
   const dispatch = useDispatch();
 
   return (
